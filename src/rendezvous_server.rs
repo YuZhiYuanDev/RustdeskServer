@@ -1,4 +1,5 @@
 use crate::common::*;
+use crate::jwt;
 use crate::peer::*;
 use hbb_common::{
     allow_err, bail,
@@ -16,7 +17,9 @@ use hbb_common::{
         register_pk_response::Result::{TOO_FREQUENT, UUID_MISMATCH},
         *,
     },
-    tcp::{listen_any, FramedStream, Encrypt},
+    sodiumoxide::crypto::{box_, box_::PublicKey, box_::SecretKey, secretbox, sign},
+    sodiumoxide::hex,
+    tcp::{listen_any, Encrypt, FramedStream},
     timeout,
     tokio::{
         self,
@@ -27,10 +30,6 @@ use hbb_common::{
     },
     tokio_util::codec::Framed,
     try_into_v4,
-    sodiumoxide::hex,
-    sodiumoxide::crypto::{
-        box_, box_::PublicKey, box_::SecretKey, secretbox, sign,
-    },
     udp::FramedSocket,
     AddrMangle, ResultType,
 };
@@ -42,7 +41,6 @@ use std::{
     sync::Arc,
     time::Instant,
 };
-use crate::jwt;
 
 #[derive(Clone, Debug)]
 enum Data {
@@ -175,11 +173,13 @@ impl RendezvousServer {
         );
         let must_login = get_arg("must-login");
         log::debug!("must_login={}", must_login);
-        if must_login.to_uppercase() == "Y" ||
-            (must_login == "" && std::env::var("MUST_LOGIN")
-            .unwrap_or_default()
-            .to_uppercase()
-            == "Y") {
+        if must_login.to_uppercase() == "Y"
+            || (must_login == ""
+                && std::env::var("MUST_LOGIN")
+                    .unwrap_or_default()
+                    .to_uppercase()
+                    == "Y")
+        {
             MUST_LOGIN.store(true, Ordering::SeqCst);
         }
 
@@ -1162,11 +1162,7 @@ impl RendezvousServer {
                         MUST_LOGIN.store(false, Ordering::SeqCst);
                     }
                 } else {
-                    let _ = writeln!(
-                        res,
-                        "MUST_LOGIN: {:?}",
-                        MUST_LOGIN.load(Ordering::SeqCst)
-                    );
+                    let _ = writeln!(res, "MUST_LOGIN: {:?}", MUST_LOGIN.load(Ordering::SeqCst));
                 }
             }
             _ => {}
