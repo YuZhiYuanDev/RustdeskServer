@@ -11,6 +11,11 @@ on:
     paths-ignore:
       - '**/README.md'
 
+env:
+  UPDATER_URL: ${{ secrets.UPDATER_URL }}
+  RENDEZVOUS_SERVERS: ${{ secrets.RENDEZVOUS_SERVERS }}
+  RS_PUB_KEY: ${{ secrets.RS_PUB_KEY }}
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -58,9 +63,6 @@ jobs:
           override: true
           components: rustfmt
       - uses: Swatinem/rust-cache@v2
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
       - uses: actions-rs/cargo@v1
         with:
           command: fmt

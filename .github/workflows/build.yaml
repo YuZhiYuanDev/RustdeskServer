@@ -19,6 +19,9 @@ on:
 env:
   CARGO_TERM_COLOR: always
   LATEST_TAG: latest
+  UPDATER_URL: ${{ secrets.UPDATER_URL }}
+  RENDEZVOUS_SERVERS: ${{ secrets.RENDEZVOUS_SERVERS }}
+  RS_PUB_KEY: ${{ secrets.RS_PUB_KEY }}
   
 jobs:
 
