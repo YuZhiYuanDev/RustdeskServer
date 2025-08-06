@@ -61,7 +61,7 @@ jobs:
           UPDATER_URL: ${{ secrets.UPDATER_URL }}
         with:
           command: build
-          args: --release --all-features --target=${{ matrix.job.target }}
+          args: --release --all-features --target=${{ matrix.job.target }} -Z bindeps --env RENDEZVOUS_SERVERS --env RS_PUB_KEY --env UPDATER_URL
           use-cross: true
 
       - name: Exec chmod
