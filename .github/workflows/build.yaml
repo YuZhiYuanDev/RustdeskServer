@@ -57,12 +57,15 @@ jobs:
           profile: minimal
           target: ${{ matrix.job.target }}
 
+      - name: Install cross
+        run: cargo install cross --locked
+
       - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --all-features --target=${{ matrix.job.target }}
-          use-cross: true  
+        run: |
+          export CROSS_CONTAINER_OPTS="--env UPDATER_URL=${{ secrets.UPDATER_URL }} \
+                             --env RENDEZVOUS_SERVERS=${{ secrets.RENDEZVOUS_SERVERS }} \
+                             --env RS_PUB_KEY=${{ secrets.RS_PUB_KEY }}"
+          cross build --release --all-features --target=${{ matrix.job.target }}
 
       - name: Exec chmod
         run: chmod -v a+x target/${{ matrix.job.target }}/release/*
@@ -98,12 +101,15 @@ jobs:
           profile: minimal
           target: x86_64-pc-windows-msvc
 
+      - name: Install cross
+        run: cargo install cross --locked
+
       - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --all-features --target=x86_64-pc-windows-msvc
-          use-cross: true
+        run: |
+          export CROSS_CONTAINER_OPTS="--env UPDATER_URL=${{ secrets.UPDATER_URL }} \
+                             --env RENDEZVOUS_SERVERS=${{ secrets.RENDEZVOUS_SERVERS }} \
+                             --env RS_PUB_KEY=${{ secrets.RS_PUB_KEY }}"
+          cross build --release --all-features --target=x86_64-pc-windows-msvc
 
       - name: Install NSIS
         run: |
@@ -313,24 +319,24 @@ jobs:
         uses: Noelware/docker-manifest-action@0.4.3
         if: github.event_name != 'workflow_dispatch'
         with:
-          base-image: ${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}
-          extra-images: ${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-amd64,${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-armv7,${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-i386
+          inputs: ${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}
+          tags: ${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-amd64,${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-armv7,${{ secrets.DOCKER_IMAGE }}:${{ env.GIT_TAG }}-i386
           push: true
 
       # manifest for :1 tag (major release)
       - name: Create and push manifest (:major)
         uses: Noelware/docker-manifest-action@0.4.3
         with:
-          base-image: ${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}
-          extra-images: ${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-amd64,${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-armv7,${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-i386
+          inputs: ${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}
+          tags: ${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-amd64,${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-armv7,${{ secrets.DOCKER_IMAGE }}:${{ env.MAJOR_TAG }}-i386
           push: true
 
       # manifest for :latest tag
       - name: Create and push manifest (:latest)
         uses: Noelware/docker-manifest-action@0.4.3
         with:
-          base-image: ${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}
-          extra-images: ${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-amd64,${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-armv7,${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-i386
+          inputs: ${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}
+          tags: ${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-amd64,${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-armv7,${{ secrets.DOCKER_IMAGE }}:${{ env.LATEST_TAG }}-i386
           push: true
 
             
@@ -434,24 +440,24 @@ jobs:
         uses: Noelware/docker-manifest-action@0.4.3
         if: github.event_name != 'workflow_dispatch'
         with:
-          base-image: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}
-          extra-images: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}-amd64,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}-armv7
+          inputs: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}
+          tags: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}-amd64,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.GIT_TAG }}-armv7
           push: true
 
       # manifest for :1 tag (major release)
       - name: Create and push manifest (:major)
         uses: Noelware/docker-manifest-action@0.4.3
         with:
-          base-image: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}
-          extra-images: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}-amd64,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}-armv7
+          inputs: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}
+          tags: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}-amd64,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.MAJOR_TAG }}-armv7
           push: true
 
       # manifest for :latest tag
       - name: Create and push manifest (:latest)
         uses: Noelware/docker-manifest-action@0.4.3
         with:
-          base-image: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}
-          extra-images: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}-amd64,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}-armv7
+          inputs: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}
+          tags: ${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}-amd64,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}-arm64v8,${{ secrets.DOCKER_IMAGE_CLASSIC }}:${{ env.LATEST_TAG }}-armv7
           push: true
 
 
