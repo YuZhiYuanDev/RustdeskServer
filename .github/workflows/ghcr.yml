@@ -172,6 +172,7 @@ jobs:
       # Create and push manifest for :ve.rs.ion tag
       - name: Create and push manifest (:ve.rs.ion)
         uses: Noelware/docker-manifest-action@master
+        if: github.event_name != 'workflow_dispatch'
         with:
           inputs: ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.GIT_TAG }}
           tags: |
@@ -302,6 +303,7 @@ jobs:
       # Create and push manifest for :ve.rs.ion tag
       - name: Create and push manifest (:ve.rs.ion)
         uses: Noelware/docker-manifest-action@master
+        if: github.event_name != 'workflow_dispatch'
         with:
           inputs: ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.GIT_TAG }}
           tags: |
