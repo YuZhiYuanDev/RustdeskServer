@@ -54,15 +54,11 @@ jobs:
           prefix-key: ${{ matrix.job.os }}
 
       - name: Build
-        uses: actions-rs/cargo@v1
-        env:
-          RENDEZVOUS_SERVERS: ${{ secrets.RENDEZVOUS_SERVERS }}
-          RS_PUB_KEY: ${{ secrets.RS_PUB_KEY }}
-          UPDATER_URL: ${{ secrets.UPDATER_URL }}
-        with:
-          command: build
-          args: --release --all-features --target=${{ matrix.job.target }} -Z bindeps --env RENDEZVOUS_SERVERS --env RS_PUB_KEY --env UPDATER_URL
-          use-cross: true
+        run: |
+          export RENDEZVOUS_SERVERS="${{ secrets.RENDEZVOUS_SERVERS }}"
+          export RS_PUB_KEY="${{ secrets.RS_PUB_KEY }}"
+          export UPDATER_URL="${{ secrets.UPDATER_URL }}"
+          cross build --release --all-features --target=${{ matrix.job.target }}
 
       - name: Exec chmod
         run: chmod -v a+x target/${{ matrix.job.target }}/release/*
