@@ -144,9 +144,9 @@ jobs:
           build-args: |
             S6_ARCH=${{ matrix.job.s6_platform }}
           tags: |
-            ghcr.io/${{ github.repository }}-s6:${{ env.LATEST_TAG }}-${{ matrix.job.name }}
-            ghcr.io/${{ github.repository }}-s6:${{ env.GIT_TAG }}-${{ matrix.job.name }}
-            ghcr.io/${{ github.repository }}-s6:${{ env.MAJOR_TAG }}-${{ matrix.job.name }}
+            ghcr.io/${{ github.repository.toLowerCase() }}-s6:${{ env.LATEST_TAG }}-${{ matrix.job.name }}
+            ghcr.io/${{ github.repository.toLowerCase() }}-s6:${{ env.GIT_TAG }}-${{ matrix.job.name }}
+            ghcr.io/${{ github.repository.toLowerCase() }}-s6:${{ env.MAJOR_TAG }}-${{ matrix.job.name }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Set up minifest and tag for pushed image
@@ -275,9 +275,9 @@ jobs:
           push: true
           provenance: false
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.LATEST_TAG }}-${{ matrix.job.name }}
-            ghcr.io/${{ github.repository }}:${{ env.GIT_TAG }}-${{ matrix.job.name }}
-            ghcr.io/${{ github.repository }}:${{ env.MAJOR_TAG }}-${{ matrix.job.name }}
+            ghcr.io/${{ github.repository.toLowerCase() }}:${{ env.LATEST_TAG }}-${{ matrix.job.name }}
+            ghcr.io/${{ github.repository.toLowerCase() }}:${{ env.GIT_TAG }}-${{ matrix.job.name }}
+            ghcr.io/${{ github.repository.toLowerCase() }}:${{ env.MAJOR_TAG }}-${{ matrix.job.name }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # Set up minifest and tag for pushed image
