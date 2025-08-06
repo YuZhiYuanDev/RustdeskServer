@@ -214,7 +214,7 @@ async fn check_software_update_() -> hbb_common::ResultType<()> {
     let resp: hbb_common::VersionCheckResponse = serde_json::from_slice(&bytes)?;
     let response_url = resp.url;
     let latest_release_version = response_url.rsplit('/').next().unwrap_or_default();
-    if get_version_number(&latest_release_version) > get_version_number(crate::version::VERSION) {
+    if get_version_number(latest_release_version) > get_version_number(crate::version::VERSION) {
         log::info!("new version is available: {}", latest_release_version);
     }
     Ok(())
