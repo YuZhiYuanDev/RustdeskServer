@@ -58,10 +58,11 @@ jobs:
 
       - name: Build
         run: |
-          export RENDEZVOUS_SERVERS="${{ secrets.RENDEZVOUS_SERVERS }}"
-          export RS_PUB_KEY="${{ secrets.RS_PUB_KEY }}"
-          export UPDATER_URL="${{ secrets.UPDATER_URL }}"
-          cross build --release --all-features --target=${{ matrix.job.target }}
+          cross build --release --all-features \
+            --target=${{ matrix.job.target }} \
+            --env RENDEZVOUS_SERVERS="${{ secrets.RENDEZVOUS_SERVERS }}" \
+            --env RS_PUB_KEY="${{ secrets.RS_PUB_KEY }}" \
+            --env UPDATER_URL="${{ secrets.UPDATER_URL }}"
 
       - name: Exec chmod
         run: chmod -v a+x target/${{ matrix.job.target }}/release/*
