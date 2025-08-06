@@ -176,10 +176,10 @@ jobs:
         with:
           inputs: ghcr.io/${{ github.repository }}-s6:${{ env.GIT_TAG }}
           tags: |
-            ghcr.io/${{ github.repository }}-s6:${{ env.GIT_TAG }}-amd64,
-            ghcr.io/${{ github.repository }}-s6:${{ env.GIT_TAG }}-arm64v8,
-            ghcr.io/${{ github.repository }}-s6:${{ env.GIT_TAG }}-armv7,
-            ghcr.io/${{ github.repository }}-s6:${{ env.GIT_TAG }}-i386
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.GIT_TAG }}-amd64,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.GIT_TAG }}-arm64v8,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.GIT_TAG }}-armv7,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.GIT_TAG }}-i386
           push: true
 
       # Create and push manifest for :major tag
@@ -188,10 +188,10 @@ jobs:
         with:
           inputs: ghcr.io/${{ github.repository }}-s6:${{ env.MAJOR_TAG }}
           tags: |
-            ghcr.io/${{ github.repository }}-s6:${{ env.MAJOR_TAG }}-amd64,
-            ghcr.io/${{ github.repository }}-s6:${{ env.MAJOR_TAG }}-arm64v8,
-            ghcr.io/${{ github.repository }}-s6:${{ env.MAJOR_TAG }}-armv7,
-            ghcr.io/${{ github.repository }}-s6:${{ env.MAJOR_TAG }}-i386
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.MAJOR_TAG }}-amd64,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.MAJOR_TAG }}-arm64v8,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.MAJOR_TAG }}-armv7,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.MAJOR_TAG }}-i386
           push: true
 
       # Create and push manifest for :latest tag
@@ -200,10 +200,10 @@ jobs:
         with:
           inputs: ghcr.io/${{ github.repository }}-s6:${{ env.LATEST_TAG }}
           tags: |
-            ghcr.io/${{ github.repository }}-s6:${{ env.LATEST_TAG }}-amd64,
-            ghcr.io/${{ github.repository }}-s6:${{ env.LATEST_TAG }}-arm64v8,
-            ghcr.io/${{ github.repository }}-s6:${{ env.LATEST_TAG }}-armv7,
-            ghcr.io/${{ github.repository }}-s6:${{ env.LATEST_TAG }}-i386
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.LATEST_TAG }}-amd64,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.LATEST_TAG }}-arm64v8,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.LATEST_TAG }}-armv7,
+            ghcr.io/${{ vars.REPOSITORYNAME }}-s6:${{ env.LATEST_TAG }}-i386
           push: true
 
   # Build and push single-arch Docker images to ghcr.io
@@ -307,10 +307,10 @@ jobs:
         with:
           inputs: ghcr.io/${{ github.repository }}:${{ env.GIT_TAG }}
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.GIT_TAG }}-amd64,
-            ghcr.io/${{ github.repository }}:${{ env.GIT_TAG }}-arm64v8,
-            ghcr.io/${{ github.repository }}:${{ env.GIT_TAG }}-armv7,
-            ghcr.io/${{ github.repository }}:${{ env.GIT_TAG }}-i386
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.GIT_TAG }}-amd64,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.GIT_TAG }}-arm64v8,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.GIT_TAG }}-armv7,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.GIT_TAG }}-i386
           push: true
 
       # Create and push manifest for :major tag
@@ -319,10 +319,10 @@ jobs:
         with:
           inputs: ghcr.io/${{ github.repository }}:${{ env.MAJOR_TAG }}
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.MAJOR_TAG }}-amd64,
-            ghcr.io/${{ github.repository }}:${{ env.MAJOR_TAG }}-arm64v8,
-            ghcr.io/${{ github.repository }}:${{ env.MAJOR_TAG }}-armv7,
-            ghcr.io/${{ github.repository }}:${{ env.MAJOR_TAG }}-i386
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.MAJOR_TAG }}-amd64,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.MAJOR_TAG }}-arm64v8,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.MAJOR_TAG }}-armv7,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.MAJOR_TAG }}-i386
           push: true
 
       # Create and push manifest for :latest tag
@@ -331,8 +331,8 @@ jobs:
         with:
           inputs: ghcr.io/${{ github.repository }}:${{ env.LATEST_TAG }}
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.LATEST_TAG }}-amd64,
-            ghcr.io/${{ github.repository }}:${{ env.LATEST_TAG }}-arm64v8,
-            ghcr.io/${{ github.repository }}:${{ env.LATEST_TAG }}-armv7,
-            ghcr.io/${{ github.repository }}:${{ env.LATEST_TAG }}-i386
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.LATEST_TAG }}-amd64,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.LATEST_TAG }}-arm64v8,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.LATEST_TAG }}-armv7,
+            ghcr.io/${{ vars.REPOSITORYNAME }}:${{ env.LATEST_TAG }}-i386
           push: true
