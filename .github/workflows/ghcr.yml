@@ -48,10 +48,13 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.job.target }}
           components: "rustfmt"
-          
+
       - uses: Swatinem/rust-cache@v2
         with:
           prefix-key: ${{ matrix.job.os }}
+
+      - name: Install cross
+        run: cargo install cross --locked
 
       - name: Build
         run: |
