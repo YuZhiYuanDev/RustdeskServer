@@ -12,7 +12,6 @@ on:
 env:
   CARGO_TERM_COLOR: always
   LATEST_TAG: latest
-  CROSS_IMAGE: ubuntu:20.04
 
 permissions:
   contents: read
@@ -40,16 +39,15 @@ jobs:
         with:
           submodules: recursive
     
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@v1
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          targets: ${{ matrix.job.target }}
-          components: "rustfmt"
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-          prefix-key: ${{ matrix.job.os }}
+          override: true
+          default: true
+          components: rustfmt
+          profile: minimal
+          target: ${{ matrix.job.target }}
 
       - name: Install cross
         run: cargo install cross --locked
