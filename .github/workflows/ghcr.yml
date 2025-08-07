@@ -12,6 +12,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   LATEST_TAG: latest
+  CROSS_IMAGE: ubuntu:20.04
 
 permissions:
   contents: read
