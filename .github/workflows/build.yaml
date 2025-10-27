@@ -68,7 +68,7 @@ jobs:
         run: chmod -v a+x target/${{ matrix.job.target }}/release/*
 
       - name: Publish Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: binaries-linux-${{ matrix.job.name }}
           path: |
@@ -162,7 +162,7 @@ jobs:
           recursive: false
 
       - name: Publish Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: binaries-windows-x86_64
           path: |
